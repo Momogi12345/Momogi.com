@@ -1,6 +1,8 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="id">
-<meta name="viewport" content="width=device-width, initial-scale=5.0, maximum-scale=1.0, user-scalable=no">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
 <body style="
 background:black;
@@ -12,15 +14,9 @@ flex-direction:column;
 align-items:center;
 ">
 
-<!-- LOGO -->
 <img src="{{ url_for('static', filename='mmg.png') }}"
-     style="
-     width:200px;
-     margin-top:20px;
-     margin-bottom:30px;
-     ">
+     style="width:200px; margin-top:20px; margin-bottom:30px;">
 
-<!-- FORM -->
 <form method="POST" style="
 display:flex;
 flex-direction:column;
@@ -29,32 +25,31 @@ max-width:300px;
 gap:10px;
 ">
 
-    <label>Nama</label>
-    <input type="text" name="name">
+<label>Nama</label>
+<input type="text" name="name">
 
-    <label>Email</label>
-    <input type="email" name="email">
+<label>Email</label>
+<input type="email" name="email">
 
-    <label>Password</label>
-    <input type="password" name="password">
+<label>Password</label>
+<input type="password" name="password">
 
-    <label>Usia</label>
-    <input type="date" name="date">
+<label>Usia</label>
+<input type="date" name="usia">
 
-    <label>Gender</label>
-    <div>
-      <input type="radio" name="gender" value="male"> Male
-      <input type="radio" name="gender" value="female"> Female
-    </div>
+<label>Gender</label>
+<div>
+  <input type="radio" name="gender" value="male"> Male
+  <input type="radio" name="gender" value="female"> Female
+</div>
 
-    <button id="btn">Lanjut</button>
+<button id="btn">Lanjut</button>
 
 </form>
 
-</body>
-
 <script>
 const btn = document.getElementById("btn");
+btn.disabled = true;
 
 const textInputs = document.querySelectorAll(
   'input[type="text"], input[type="email"], input[type="password"], input[type="date"]'
@@ -62,12 +57,10 @@ const textInputs = document.querySelectorAll(
 
 const radios = document.querySelectorAll('input[name="gender"]');
 
-// pas user ngetik
 textInputs.forEach(input => {
   input.addEventListener("input", check);
 });
 
-// pas pilih radio
 radios.forEach(r => {
   r.addEventListener("change", check);
 });
@@ -75,12 +68,10 @@ radios.forEach(r => {
 function check() {
   let filled = true;
 
-  // cek input biasa
   textInputs.forEach(i => {
     if (i.value === "") filled = false;
   });
 
-  // cek radio
   if (!document.querySelector('input[name="gender"]:checked')) {
     filled = false;
   }
