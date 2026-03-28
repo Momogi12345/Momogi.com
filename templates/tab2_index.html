@@ -28,13 +28,16 @@ body {
 
 <body>
 
+<!-- AUDIO -->
 <audio autoplay loop muted>
-  <source src="{{ url_for('static', filename='mmg.mp3') }}">
+  <source src="{{ url_for('static', filename='mmg.mp3') }}" type="audio/mpeg">
 </audio>
 
+<!-- LOGO -->
 <img src="{{ url_for('static', filename='mmg.png') }}"
      style="position:absolute; left:50%; top:5vh; transform:translateX(-50%); width:200px;">
 
+<!-- BUTTON -->
 <div style="
 position:absolute;
 top:40vh;
@@ -52,7 +55,7 @@ gap:20px;
 <!-- WD -->
 <div id="wd" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center;">
   <div style="background:orange; padding:30px;">
-    <span onclick="closewd()">X</span>
+    <span onclick="closewd()" style="cursor:pointer;">X</span>
     <h2>WITHDRAW | DEPOSIT</h2>
     <p>Hubungi WA: 085788995899</p>
   </div>
@@ -80,64 +83,73 @@ gap:20px;
 </div>
 
 <script>
-function openwd() {
-  document.getElementById("wd").style.display = "flex";
-}
-function closewd() {
-  document.getElementById("wd").style.display = "none";
-}
+document.addEventListener("DOMContentLoaded", function() {
 
-function openslot() {
-  document.getElementById("slot").style.display = "flex";
-}
-function closeslot() {
-  document.getElementById("slot").style.display = "none";
-}
+  function openwd() {
+    document.getElementById("wd").style.display = "flex";
+  }
+  function closewd() {
+    document.getElementById("wd").style.display = "none";
+  }
 
-const symbols = ["🍒","🍋","7️⃣"];
-const hasil = document.getElementById("hasil");
+  function openslot() {
+    document.getElementById("slot").style.display = "flex";
+  }
+  function closeslot() {
+    document.getElementById("slot").style.display = "none";
+  }
 
-for (let i = 0; i < 36; i++) {
-  let div = document.createElement("div");
-  div.className = "cell";
-  div.innerText = "❓";
-  hasil.appendChild(div);
-}
+  window.openwd = openwd;
+  window.closewd = closewd;
+  window.openslot = openslot;
+  window.closeslot = closeslot;
 
-function rand() {
-  return symbols[Math.floor(Math.random()*symbols.length)];
-}
+  const symbols = ["🍒","🍋","7️⃣"];
+  const hasil = document.getElementById("hasil");
 
-function spin() {
-  const cells = document.querySelectorAll(".cell");
-  let count = 0;
+  // INIT GRID
+  for (let i = 0; i < 36; i++) {
+    let div = document.createElement("div");
+    div.className = "cell";
+    div.innerText = "❓";
+    hasil.appendChild(div);
+  }
 
-  let interval = setInterval(() => {
-    cells.forEach((cell) => {
-      let symbol = rand();
-      cell.innerText = symbol;
-    });
+  function rand() {
+    return symbols[Math.floor(Math.random()*symbols.length)];
+  }
 
-    count++;
+  window.spin = function() {
+    const cells = document.querySelectorAll(".cell");
+    let count = 0;
 
-    if (count > 15) {
-      clearInterval(interval);
+    let interval = setInterval(() => {
+      cells.forEach((cell) => {
+        cell.innerText = rand();
+      });
 
-      let first = cells[0].innerText;
-      let win = true;
+      count++;
 
-      for (let i = 1; i < 6; i++) {
-        if (cells[i].innerText !== first) {
-          win = false;
-          break;
+      if (count > 15) {
+        clearInterval(interval);
+
+        let first = cells[0].innerText;
+        let win = true;
+
+        for (let i = 1; i < 6; i++) {
+          if (cells[i].innerText !== first) {
+            win = false;
+            break;
+          }
         }
-      }
 
-      document.getElementById("result").innerText =
-        win ? "JACKPOT 🔥" : "Coba lagi";
-    }
-  }, 100);
-}
+        document.getElementById("result").innerText =
+          win ? "JACKPOT 🔥" : "Coba lagi";
+      }
+    }, 100);
+  }
+
+});
 </script>
 
 </body>
